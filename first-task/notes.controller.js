@@ -18,6 +18,21 @@ async function addNote(title) {
   console.log(chalk.bgGreen("Note was added!"));
 }
 
+async function editNote(noteId, newTitle) {
+  const notes = await getNotes();
+
+  const noteIndex = notes.findIndex(({ id }) => id === noteId);
+
+  notes[noteIndex].title = newTitle;
+
+  await fs.writeFile(notesPath, JSON.stringify(notes));
+  console.log(
+    chalk.bgGreen(
+      `The title of the note with id=${noteId} has been successfully changed to the ${newTitle}`,
+    ),
+  );
+}
+
 async function removeNote(noteId) {
   const notes = await getNotes();
 
@@ -52,6 +67,7 @@ async function printNotes() {
 
 module.exports = {
   addNote,
+  editNote,
   printNotes,
   removeNote,
 };
